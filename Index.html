@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RRR & Pips Calculator - Excellence FX</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #111827;
+      color: #f9fafb;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .container {
+      background: #1f2937;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      margin-bottom: 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+    button {
+      background-color: #10b981;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #374151;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>🧮 RRR & Pips Calculator - Excellence FX</h2>
+    <label>Entry Price:</label>
+    <input type="number" id="entry" placeholder="e.g. 3294.278" />
+    <label>Stop Loss (SL):</label>
+    <input type="number" id="sl" placeholder="e.g. 3302" />
+    <label>Take Profit 1 (TP1):</label>
+    <input type="number" id="tp1" placeholder="e.g. 3256.215" />
+    <label>Take Profit 2 (TP2):</label>
+    <input type="number" id="tp2" placeholder="e.g. 3240.678" />
+    <label>Lot Size:</label>
+    <input type="number" id="lot" placeholder="e.g. 1.00" />
+    <button onclick="calculateRRR()">🔥 Calculate RRR & Pips</button>
+    <div class="result" id="result"></div>
+  </div>  <script>
+    function calculateRRR() {
+      const entry = parseFloat(document.getElementById("entry").value);
+      const sl = parseFloat(document.getElementById("sl").value);
+      const tp1 = parseFloat(document.getElementById("tp1").value);
+      const tp2 = parseFloat(document.getElementById("tp2").value);
+      const lot = parseFloat(document.getElementById("lot").value);
+
+      if (!entry || !sl || !tp1 || !tp2 || !lot) {
+        document.getElementById("result").innerText = "⚠️ Please fill all fields properly.";
+        return;
+      }
+
+      const pipMultiplier = 100; // assuming gold or 2-decimal instrument (adjust to 10000 for currencies like EURUSD)
+
+      const risk = Math.abs(entry - sl);
+      const reward1 = Math.abs(tp1 - entry);
+      const reward2 = Math.abs(tp2 - entry);
+
+      const rrr1 = (reward1 / risk).toFixed(2);
+      const rrr2 = (reward2 / risk).toFixed(2);
+
+      const pipsRisk = (risk * pipMultiplier).toFixed(1);
+      const pipsReward1 = (reward1 * pipMultiplier).toFixed(1);
+      const pipsReward2 = (reward2 * pipMultiplier).toFixed(1);
+
+      const riskUSD = (risk * lot * 100).toFixed(2);
+      const reward1USD = (reward1 * lot * 100).toFixed(2);
+      const reward2USD = (reward2 * lot * 100).toFixed(2);
+
+      document.getElementById("result").innerHTML = `
+        🔥 RRR to TP1: <strong>${rrr1} : 1</strong> <br>
+        📏 Pips to TP1: <strong>${pipsReward1} pips</strong> <br>
+        💰 USD Profit (TP1): <strong>$${reward1USD}</strong> <br><br>
+
+        🔥 RRR to TP2: <strong>${rrr2} : 1</strong> <br>
+        📏 Pips to TP2: <strong>${pipsReward2} pips</strong> <br>
+        💰 USD Profit (TP2): <strong>$${reward2USD}</strong> <br><br>
+
+        ⚠️ Pips Risk: <strong>${pipsRisk} pips</strong> <br>
+        💸 Risk Amount: <strong>$${riskUSD}</strong>
+      `;
+    }
+  </script></body>
+</html>
